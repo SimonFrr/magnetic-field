@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title> Flèches </title>
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+</head>
+  
+<body style="margin: 0; height: 100vh;">
+
+        <div class="col-xs-12">
+            <canvas id="myCanvas" width="1000" height="600" style="width: 1000px; height: 600px; border: solid 3px grey">
+            </canvas>
+        </div>
+
+  <script>
+
+    var myCanvas = document.getElementById('myCanvas');
+    var ctx = myCanvas.getContext("2d");
+    var canvasWidth = 1000;
+    var canvasHeight = 600;
+    var size = 20;
+
+    drawAll = function(evt) {
+
+      ctx.clearRect(0, 0, 1000, 600);
+
+      var x = evt.layerX;
+      var y = evt.layerY;
+
+      var i, j;
+
+      for (i = 0; i < canvasWidth / size; i++) {
+        for (j = 0; j < canvasHeight / size; j++) {
+          var xx = size * i + (size / 2);
+          var yy = size * j + (size / 2);
+          drawOne(x, y, xx, yy);
+        }
+      }
+    }
+
+    drawOne = function (x, y, xx, yy) {
+
+      var a = xx - x;
+      var b = yy - y;
+
+      var hyp = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+      var sin = b / hyp;
+      var cos = a / hyp;
+
+      var dist = 1 - (hyp / 1166);
+      ctx.lineWidth = 10 * Math.pow(dist, 10);
+      // ctx.strokeStyle = 'rgba(0,0,0,'+ Math.pow(dist, 10) +')'
+
+      var a = xx + (size / 2) * cos;
+      var b = yy + (size / 2) * sin;
+      var c = xx - (size / 2) * cos;
+      var d = yy - (size / 2) * sin;
+
+      ctx.beginPath();
+      ctx.moveTo(a, b);
+      ctx.lineTo(c, d);
+      ctx.stroke();
+    }
+
+    myCanvas.addEventListener("mousemove", drawAll);
+
+  </script>
+
+</body>
+</html>
